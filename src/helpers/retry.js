@@ -5,10 +5,14 @@ const retry = async (fn, max=5, curr=0) => {
     try {
         return await fn()
     } catch(e) {
+        if(e.message.includes('Package version not found')){
+            return
+        }
         if (curr < max){
             curr++
             return retry(fn, max, curr)
         }
+        console.log(JSON.stringify(e))
         throw e
     }
 }
